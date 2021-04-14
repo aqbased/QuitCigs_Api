@@ -29,7 +29,7 @@ router.get('/journal/:id', requireToken, (req, res, next) => {
     .then(handle404)
     // throw an error if current user doesn't own journal
     .then(journal => requireOwnership(req, journal))
-    .then(journal => res.status(200).json({ journal }))
+    .then(journal => res.status(200).json({ journal: journal.toObject() }))
     .catch(next)
 })
 
