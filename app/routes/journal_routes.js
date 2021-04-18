@@ -6,6 +6,13 @@ const requireToken = passport.authenticate('bearer', { session: false })
 const removeBlanks = require('../../lib/remove_blank_fields')
 const router = express.Router()
 
+router.get('/most-recent-smoked', requireToken, (req, res, next) => {
+  Journal.findOne({ hasSmoked: true, owner: req.user.id }).sort('-createdAt')
+    .then(handle404)
+    .then(journal => res.json(journal))
+    .catch(next)
+})
+
 // POST - Create
 router.post('/journal', requireToken, (req, res, next) => {
   console.log('The user object:', req.user)
